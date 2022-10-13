@@ -1,9 +1,13 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const  dotenv = require('dotenv');
+
+dotenv.config();
+
 
 //Connenct to DB -change admin name first
-mongoose.connect('mongodb+srv://<admin name>:<LSPbCvMzUqpEOZrO>@cluster0.z3a5rdz.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect( process.env.DB_CONNECT,
 { useNewUrlParser: true },
 () => console.log('connected to db'))
 
