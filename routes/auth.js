@@ -1,31 +1,33 @@
-const router = require('express').Router();
-const User = require('../model/User');
+const router = require("express").Router();
+const User = require("../model/User");
 
 //Validation
 
-const Joi = require('@hapi/joi');
+const Joi = require("@hapi/joi");
 const schema = {
-    name: Joi.string().min(3).required(),
-    email: Joi.string().min(6).required().email(),
-    
-}
+  name: Joi.string().min(3).required(),
+  email: Joi.string().min(6).required().email(),
+  password: Joi.string().min(6).required(),
+};
+
+router.post("/register", async (req, res) => {
 
 
-router.post('/register', async (req,res) => {
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
+//Validate data before making user
+const validation = Joi.validate(req.body, schema);
 
-    });
-    try {
-        const savedUser = await user.save();
-        res.send(savedUser);
 
-    }catch(err) {
-        res.status(400).send(err);
-    }
-
+  const user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  });
+  try {
+    const savedUser = await user.save();
+    res.send(savedUser);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 // router.post('/login')
-module.exports =router;
+module.exports = router;
